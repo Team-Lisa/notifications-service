@@ -1,5 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
+import requests
 
 def Singleton(class_):
     instances = {}
@@ -9,6 +10,11 @@ def Singleton(class_):
         return instances[class_]
     return getinstance
 
+def get_users():
+    payload = {'frm': '5', 'to': '0'}
+    users = requests.get("https://users-service-idoma-play.herokuapp.com/users/lastConnection", params=payload)
+    return users
+
 @Singleton
 class Scheduler():
 
@@ -17,7 +23,7 @@ class Scheduler():
 
     def add_job(self):
         #self.scheduler.add_job(getUsers, 'interval', days=1, start_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        self.scheduler.add_job(getUsers, 'cron', day_of_week='mon-sun', hour='10-22', start_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        self.scheduler.add_job(get_users, 'cron', day_of_week='mon-sun', hour='10-22', start_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     def start(self):
         self.add_job()
