@@ -4,11 +4,13 @@ class NotificationController:
 
     @staticmethod
     def start_cron():
-        return NotificationService().start_scheduler()
+        message = NotificationService().start_scheduler()
+        return { "message": message}
 
     @staticmethod
     def stop_cron():
-        return NotificationService().start_scheduler()
+        message = NotificationService().stop_scheduler()
+        return {"message": message}
 
     @staticmethod
     def get_jobs():

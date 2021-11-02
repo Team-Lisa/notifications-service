@@ -9,7 +9,7 @@ class NotificationService:
         self.scheduler.start()
         return "The notifications service has started."
 
-    def stop_cron(self):
+    def stop_scheduler(self):
         self.scheduler.stop()
         return "The notifications service has stopped."
 
