@@ -1,5 +1,5 @@
 from apscheduler.schedulers.background import BackgroundScheduler
-from datetime import datetime
+from datetime import datetime, timedelta
 from api.service.notification_service import NotificationService
 
 def Singleton(class_):
@@ -24,8 +24,8 @@ class Scheduler():
         self.scheduler = BackgroundScheduler()
 
     def add_job(self, test = False):
-        #self.scheduler.add_job(getUsers, 'interval', days=1, start_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        self.scheduler.add_job(send_notifications, 'cron', args = [test], day_of_week='mon-sun', hour='10-22', start_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        yesterday = datetime.now() - timedelta(hours=23.9)
+        self.scheduler.add_job(send_notifications, 'interval', args = [test], days=1, start_date=yesterday.strftime("%Y-%m-%d %H:%M:%S"))
 
     def start(self):
         if self.state == "Started":
