@@ -1,9 +1,7 @@
 # notifications-service
 
-# Base Python Service
-
-[![.github/workflows/pipeline.yml](https://github.com/Team-Lisa/python-service/actions/workflows/pipeline.yml/badge.svg?branch=master)](https://github.com/Team-Lisa/python-service/actions/workflows/pipeline.yml)
-[![Coverage Status](https://coveralls.io/repos/github/Team-Lisa/python-service/badge.svg)](https://coveralls.io/github/Team-Lisa/python-service)
+[![.github/workflows/pipeline.yml](https://github.com/Team-Lisa/notifications-service/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/Team-Lisa/notifications-service/actions/workflows/pipeline.yml)
+[![Coverage Status](https://coveralls.io/repos/github/Team-Lisa/notifications-service/badge.svg?branch=main)](https://coveralls.io/github/Team-Lisa/notifications-service?branch=main)
 
 ## Local Mode
 
