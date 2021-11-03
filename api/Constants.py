@@ -1,5 +1,5 @@
 ## NOTIF SERVICE
-USER_SERVICE = "https://users-service-idoma-play.herokuapp.com/users/lastConnection"
+USER_SERVICE = "https://users-service-idoma-play.herokuapp.com/users/"
 
 ## NOTIFICATION
 NOTIF_TITLE = "Vuelve a Jugar"
