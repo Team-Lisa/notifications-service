@@ -5,10 +5,13 @@ from api.Constants import USER_SERVICE
 import requests
 
 
-def calculate_next_notification_date(case):
+def calculate_next_notification_date(case, days_since_last_connection):
     today = datetime.now().date()
     if case == 1:
-        next_notification = today + timedelta(days=1)
+        if days_since_last_connection == 5:
+            next_notification = today + timedelta(days=2)
+        else:
+            next_notification = today + timedelta(days=1)
     elif case == 2:
         next_notification = today + timedelta(days=7)
     else:
@@ -48,10 +51,12 @@ class NotificationService:
         self.send_notifications_to_users(users, 3)
 
     def send_notifications_to_users(self, users, case):
-        today = datetime.now().date().strftime('%Y-%m-%d')
+        today = datetime.now().date()
         for user in users:
-            if user['next_notification'] == today:
+            user_last_connection = datetime.strptime(user['last_connection'], '%Y-%m-%d')
+            days_since_last_connection = today - user_last_connection
+            if user['next_notification'] == today.strftime('%Y-%m-%d'):
                 notification = Notification(user['expo_token'])
                 self.sender.send_notification(notification)
-                next_notification = calculate_next_notification_date(case)
+                next_notification = calculate_next_notification_date(case, days_since_last_connection)
                 update_user(next_notification, user)
