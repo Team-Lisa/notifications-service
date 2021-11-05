@@ -1,2 +1,0 @@
-class EmptyPasswordError(Exception):
-    pass

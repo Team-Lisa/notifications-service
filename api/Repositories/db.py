@@ -1,6 +1,6 @@
 from mongoengine import connect, get_connection
 import os
-from api.Exceptions.empty_password_error import EmptyPasswordError
+from api.Exceptions.empty_parameter_error import EmptyPasswordError
 
 
 
