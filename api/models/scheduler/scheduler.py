@@ -1,6 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
-import requests
+from api.service.notification_service import NotificationService
 
 def Singleton(class_):
     instances = {}
@@ -10,27 +10,32 @@ def Singleton(class_):
         return instances[class_]
     return getinstance
 
-def get_users():
-    payload = {'frm': '5', 'to': '0'}
-    users = requests.get("https://users-service-idoma-play.herokuapp.com/users/lastConnection", params=payload)
-    return users
+def send_notifications(test = False):
+    if test:
+        return
+    NotificationService().send_notifications()
+    return
 
 @Singleton
 class Scheduler():
 
     def __init__(self):
+        self.state = None
         self.scheduler = BackgroundScheduler()
 
-    def add_job(self):
-        #self.scheduler.add_job(getUsers, 'interval', days=1, start_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        self.scheduler.add_job(get_users, 'cron', day_of_week='mon-sun', hour='10-22', start_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    def add_job(self, test = False):
+        yesterday = datetime.now() - timedelta(hours=23.9)
+        self.scheduler.add_job(send_notifications, 'interval', args = [test], days=1, start_date=yesterday.strftime("%Y-%m-%d %H:%M:%S"))
 
     def start(self):
-        self.add_job()
+        if self.state == "Started":
+            return "Scheduler already running"
         self.scheduler.start()
+        self.state = "Started"
 
     def stop(self):
-        self.scheduler.pause()
+        self.scheduler.shutdown(False)
+        self.state = "Stopped"
 
     def get_jobs(self):
         self.scheduler.print_jobs()
