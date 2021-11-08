@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from api.models.scheduler.scheduler import Scheduler
 from api.Constants import NEXT_RUN, FUNCTION_TO_EXECUTE, SERVICE_STARTED, SERVICE_STOPPED, JOB_ADDED
 
@@ -24,3 +26,10 @@ class SchedulerService:
         for job in jobs:
             result.append({"Job": [FUNCTION_TO_EXECUTE + job.name, NEXT_RUN + job.next_run_time.strftime('%Y/%m/%d %H:%M:%S')]})
         return result
+
+    def modify_jobs(self, date):
+        next_run = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        jobs = self.scheduler.get_jobs()
+        for job in jobs:
+            job.modify(next_run_time=next_run)
+            return {"Job": [FUNCTION_TO_EXECUTE + job.name, NEXT_RUN + job.next_run_time.strftime('%Y/%m/%d %H:%M:%S')]}

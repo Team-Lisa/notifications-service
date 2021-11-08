@@ -13,6 +13,10 @@ class NotificationController:
         return {"message": message}
 
     @staticmethod
+    def modify_next_run_in_job(date):
+        return SchedulerService().modify_jobs(date)
+
+    @staticmethod
     def stop_cron():
         message = SchedulerService().stop_scheduler()
         return {"message": message}
