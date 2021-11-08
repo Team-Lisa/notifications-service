@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 from api.controllers.notification_controller import NotificationController
 from api.Constants import SERVICE_STARTED, JOB_ADDED, SERVICE_STOPPED
@@ -32,6 +34,15 @@ def test_get_jobs(init):
     notifictaion_controller = NotificationController()
     notifictaion_controller.get_jobs = MagicMock(return_value=[{"Job": ["function to execute: Dummy", "next run at 2021-05-20"]}])
     response = notifictaion_controller.get_jobs()
+    assert len(response) == 1
+    assert (response[0]['Job'][0]).__contains__("function to execute:")
+    assert (response[0]['Job'][1]).__contains__("next run at")
+
+def test_modify_job(init):
+    notifictaion_controller = NotificationController()
+    today = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    notifictaion_controller.modify_next_run_in_job = MagicMock(return_value=[{"Job": ["function to execute: Dummy", "next run at " + today]}])
+    response = notifictaion_controller.modify_next_run_in_job(today)
     assert len(response) == 1
     assert (response[0]['Job'][0]).__contains__("function to execute:")
     assert (response[0]['Job'][1]).__contains__("next run at")
