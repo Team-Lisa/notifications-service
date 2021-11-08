@@ -13,10 +13,14 @@ async def stop_cron():
     return NotificationController.stop_cron()
 
 @router.get("/notifications/add")
-async def get_jobs():
+async def add_jobs():
     return NotificationController.add_job()
 
 @router.get("/notifications/jobs")
 async def get_jobs():
     return NotificationController.get_jobs()
+
+@router.post("/notifications/modify/job")
+async def modify_jobs(next_run: str = ""):
+    return NotificationController.modify_next_run_in_job(next_run)
 

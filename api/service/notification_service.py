@@ -52,9 +52,10 @@ class NotificationService:
 
     def send_notifications_to_users(self, users, case):
         today = datetime.now().date()
+        today_with_time = datetime(year=today.year, month=today.month, day=today.day)
         for user in users:
             user_last_connection = datetime.strptime(user['last_connection'], '%Y-%m-%d')
-            days_since_last_connection = today - user_last_connection
+            days_since_last_connection = today_with_time - user_last_connection
             if user['next_notification'] == today.strftime('%Y-%m-%d'):
                 notification = Notification(user['expo_token'])
                 self.sender.send_notification(notification)
