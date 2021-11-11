@@ -26,8 +26,8 @@ class Scheduler():
 
     def add_job(self, test = False, start_date = None):
         if start_date == None:
-            tz = pytz.timezone('America/Argentina/Buenos_Aires')
-            start_date = (datetime.now(tz=tz) - timedelta(hours=23, minutes=55)).strftime("%Y-%m-%d %H:%M:%S")
+            time_zone = pytz.timezone('UTC')
+            start_date = (datetime.now(tz=time_zone) - timedelta(hours=23, minutes=55)).strftime("%Y-%m-%d %H:%M:%S")
         self.scheduler.add_job(send_notifications, 'interval', args = [test], days=1, start_date=start_date)
 
     def start(self):
