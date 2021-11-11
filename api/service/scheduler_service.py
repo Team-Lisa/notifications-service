@@ -11,11 +11,6 @@ def convert_datetime_to_utc(datetime):
     local_datetime = time_zone.localize(datetime, is_dst=None)
     return local_datetime.astimezone(pytz.utc)
 
-def convert_from_utc_to_Buenos_Aires(datetime):
-    time_zone = pytz.timezone('UTC')
-    local_datetime = time_zone.localize(datetime, is_dst=None)
-    return local_datetime.astimezone(pytz.timezone('America/Argentina/Buenos_Aires'))
-
 class SchedulerService:
 
     def __init__(self):
@@ -40,8 +35,7 @@ class SchedulerService:
         jobs = self.scheduler.get_jobs()
         result = []
         for job in jobs:
-            next_run = convert_from_utc_to_Buenos_Aires(job.next_run_time)
-            result.append({"Job": [FUNCTION_TO_EXECUTE + job.name, NEXT_RUN + next_run.strftime('%Y-%m-%d %H:%M:%S')]})
+            result.append({"Job": [FUNCTION_TO_EXECUTE + job.name, NEXT_RUN + job.next_run_time.strftime('%Y-%m-%d %H:%M:%S') + ' UTC']})
         return result
 
     def modify_jobs(self, date):
