@@ -57,6 +57,7 @@ class NotificationService:
             user_last_connection = datetime.strptime(user['last_connection'], '%Y-%m-%d')
             days_since_last_connection = today_with_time - user_last_connection
             if user['next_notification'] == today.strftime('%Y-%m-%d'):
+                if user['expo_token'] == None: continue
                 notification = Notification(user['expo_token'])
                 self.sender.send_notification(notification)
                 next_notification = calculate_next_notification_date(case, days_since_last_connection)
