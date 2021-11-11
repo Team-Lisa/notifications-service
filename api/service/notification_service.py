@@ -16,7 +16,7 @@ def calculate_next_notification_date(case, days_since_last_connection):
         next_notification = today + timedelta(days=7)
     else:
         next_notification = today + timedelta(days=30)
-    return next_notification.strftime('%Y-%m-%d')
+    return next_notification.strftime('%Y-%m-%d %H:%M:%S')
 
 def get_users(frm, to):
     payload = {'frm': str(frm), 'to': str(to)}
@@ -25,7 +25,7 @@ def get_users(frm, to):
 
 
 def update_user(next_notification, user):
-    requests.patch(USER_SERVICE + "nextNotification", data ={'next_notification_date':next_notification, 'email': user['email']})
+    requests.patch(USER_SERVICE + "nextNotification", data ={'date':next_notification, 'email': user['email']})
 
 
 class NotificationService:
