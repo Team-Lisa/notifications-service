@@ -1,3 +1,4 @@
+import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 from api.service.notification_service import NotificationService
@@ -25,7 +26,8 @@ class Scheduler():
 
     def add_job(self, test = False, start_date = None):
         if start_date == None:
-            start_date = (datetime.now() - timedelta(hours=23, minutes=55)).strftime("%Y-%m-%d %H:%M:%S")
+            tz = pytz.timezone('America/Argentina/Buenos_Aires')
+            start_date = (datetime.now(tz=tz) - timedelta(hours=23, minutes=55)).strftime("%Y-%m-%d %H:%M:%S")
         self.scheduler.add_job(send_notifications, 'interval', args = [test], days=1, start_date=start_date)
 
     def start(self):
