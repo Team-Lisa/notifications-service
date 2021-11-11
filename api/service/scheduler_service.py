@@ -12,24 +12,28 @@ class SchedulerService:
         self.scheduler.start()
         return SERVICE_STARTED
 
-    def add_job_to_scheduler(self):
-        self.scheduler.add_job()
+    def add_job_to_scheduler(self, start_date = None):
+        self.scheduler.add_job(start_date=start_date)
         return JOB_ADDED
 
     def stop_scheduler(self):
         self.scheduler.stop()
         return SERVICE_STOPPED
 
+    def remove_jobs(self):
+        return self.scheduler.remove_jobs()
+
     def get_jobs(self):
         jobs = self.scheduler.get_jobs()
         result = []
         for job in jobs:
-            result.append({"Job": [FUNCTION_TO_EXECUTE + job.name, NEXT_RUN + job.next_run_time.strftime('%Y/%m/%d %H:%M:%S')]})
+            result.append({"Job": [FUNCTION_TO_EXECUTE + job.name, NEXT_RUN + job.next_run_time.strftime('%Y-%m-%d %H:%M:%S')]})
         return result
 
     def modify_jobs(self, date):
-        next_run = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        self.remove_jobs()
+        next_run = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+        self.add_job_to_scheduler(next_run)
         jobs = self.scheduler.get_jobs()
         for job in jobs:
-            job.modify(next_run_time=next_run)
-            return {"Job": [FUNCTION_TO_EXECUTE + job.name, NEXT_RUN + job.next_run_time.strftime('%Y/%m/%d %H:%M:%S')]}
+            return {"Job": [FUNCTION_TO_EXECUTE + job.name, NEXT_RUN + job.next_run_time.strftime('%Y-%m-%d %H:%M:%S')]}

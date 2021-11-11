@@ -23,9 +23,10 @@ class Scheduler():
         self.state = None
         self.scheduler = BackgroundScheduler()
 
-    def add_job(self, test = False):
-        yesterday = datetime.now() - timedelta(hours=23.9)
-        self.scheduler.add_job(send_notifications, 'interval', args = [test], days=1, start_date=yesterday.strftime("%Y-%m-%d %H:%M:%S"))
+    def add_job(self, test = False, start_date = None):
+        if start_date == None:
+            start_date = (datetime.now() - timedelta(hours=23, minutes=55)).strftime("%Y-%m-%d %H:%M:%S")
+        self.scheduler.add_job(send_notifications, 'interval', args = [test], days=1, start_date=start_date)
 
     def start(self):
         if self.state == "Started":
@@ -39,4 +40,8 @@ class Scheduler():
 
     def get_jobs(self):
         self.scheduler.print_jobs()
+        return self.scheduler.get_jobs()
+
+    def remove_jobs(self):
+        self.scheduler.remove_all_jobs()
         return self.scheduler.get_jobs()
