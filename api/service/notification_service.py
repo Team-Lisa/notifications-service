@@ -25,7 +25,7 @@ def get_users(frm, to):
 
 
 def update_user(next_notification, user):
-    requests.patch(USER_SERVICE + "nextNotification", data ={'date':next_notification, 'email': user['email']})
+    requests.patch(USER_SERVICE + "nextNotification", data ='{"date":' + next_notification + ', "email":' + user['email'] + '}')
 
 
 class NotificationService:
