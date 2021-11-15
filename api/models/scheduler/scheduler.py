@@ -33,11 +33,14 @@ class Scheduler():
     def start(self):
         if self.state == "Started":
             return "Scheduler already running"
-        self.scheduler.start()
+        if self.state == "Stopped":
+            self.scheduler.resume()
+        else:
+            self.scheduler.start()
         self.state = "Started"
 
     def stop(self):
-        self.scheduler.shutdown(False)
+        self.scheduler.pause()
         self.state = "Stopped"
 
     def get_jobs(self):
