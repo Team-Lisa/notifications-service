@@ -28,6 +28,7 @@ def update_user(next_notification, user):
     requests.patch(USER_SERVICE + "nextNotification", json = {"date": next_notification, "email":user['email']})
 
 
+
 class NotificationService:
 
     def __init__(self):
