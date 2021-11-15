@@ -25,6 +25,7 @@ class SchedulerService:
         return JOB_ADDED
 
     def stop_scheduler(self):
+        self.remove_jobs()
         self.scheduler.stop()
         return SERVICE_STOPPED
 
